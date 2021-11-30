@@ -3,13 +3,29 @@ import BlockGroup from "../blockGroup/index";
 import MainCounters from "../mainCounters";
 import UpgradeSection from "../upgradeSection";
 import { UpgradeList } from "../../libs/upgradeList";
+import { updateMultipliers } from "../../libs/multipliers";
 
 const Main = () => {
   const [counter, setCounter] = useState(0);
-  const [passiveIncrementPerSecond] = useState(0);
-  const [simpleClickMultiplier] = useState(1);
+  const [passiveIncrementPerSecond, setPassiveIncrementPerSecond] = useState(0);
+  const [simpleClickMultiplier, setSimpleClickMultiplier] = useState(1);
   const [effectIndex, setEffectIndex] = useState(-1);
   const [fadeOut, setFadeOut] = useState([...Array(16)].map(() => false));
+  const [latestUpgradeId, setLatestUpgradeId] = useState(0);
+  const [basicRegenTimer, setBasicRegenTimer] = useState(12000);
+
+  useEffect(() => {
+    console.log("here", latestUpgradeId);
+    updateMultipliers(
+      latestUpgradeId,
+      simpleClickMultiplier,
+      setSimpleClickMultiplier,
+      passiveIncrementPerSecond,
+      setPassiveIncrementPerSecond,
+      basicRegenTimer,
+      setBasicRegenTimer
+    );
+  }, [latestUpgradeId]);
 
   useEffect(() => {
     if (passiveIncrementPerSecond !== 0) {
@@ -30,7 +46,7 @@ const Main = () => {
       setFadeOut(fadeOut);
       const timeout = setTimeout(() => {
         setEffectIndex(index);
-      }, 12000);
+      }, basicRegenTimer);
 
       return () => {
         clearTimeout(timeout);
@@ -49,7 +65,10 @@ const Main = () => {
     <>
       <MainCounters balance={counter} />
       <BlockGroup simpleBlockClick={simpleClick} fadeOut={fadeOut} />
-      <UpgradeSection upgrades={UpgradeList} />
+      <UpgradeSection
+        upgrades={UpgradeList}
+        setLatestUpgradeId={setLatestUpgradeId}
+      />
     </>
   );
 };

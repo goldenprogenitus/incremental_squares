@@ -1,11 +1,17 @@
 import React from "react";
-import UpgradeButton from "../upgradeButton";
+import UpgradeCard from "../upgradeCard";
 
-const UpgradeSection = ({ counter, upgrades = [] }) => (
+const UpgradeSection = ({ counter, upgrades = [], setLatestUpgradeId }) => (
   <div>
     <p>Upgrades</p>
     {upgrades.map((e, i) => (
-      <UpgradeButton description={e.description} price={e.basePrice} />
+      <UpgradeCard
+        description={e.description}
+        price={e.basePrice}
+        title={e.title}
+        setLatestUpgradeId={setLatestUpgradeId}
+        upgradeId={e.id}
+      />
     ))}
   </div>
 );
