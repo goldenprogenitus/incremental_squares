@@ -11,21 +11,8 @@ const Main = () => {
   const [simpleClickMultiplier, setSimpleClickMultiplier] = useState(1);
   const [effectIndex, setEffectIndex] = useState(-1);
   const [fadeOut, setFadeOut] = useState([...Array(16)].map(() => false));
-  const [latestUpgradeId, setLatestUpgradeId] = useState(0);
   const [basicRegenTimer, setBasicRegenTimer] = useState(12000);
-
-  useEffect(() => {
-    console.log("here", latestUpgradeId);
-    updateMultipliers(
-      latestUpgradeId,
-      simpleClickMultiplier,
-      setSimpleClickMultiplier,
-      passiveIncrementPerSecond,
-      setPassiveIncrementPerSecond,
-      basicRegenTimer,
-      setBasicRegenTimer
-    );
-  }, [latestUpgradeId]);
+  const [upgradeLevels, setUpgradeLevels] = useState(UpgradeList.map(() => 0));
 
   useEffect(() => {
     if (passiveIncrementPerSecond !== 0) {
@@ -52,7 +39,7 @@ const Main = () => {
         clearTimeout(timeout);
       };
     },
-    [counter, simpleClickMultiplier, fadeOut]
+    [counter, simpleClickMultiplier, fadeOut, basicRegenTimer]
   );
 
   useEffect(() => {
@@ -60,14 +47,23 @@ const Main = () => {
     setFadeOut([...fadeOut]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [effectIndex]);
-
+  console.log(upgradeLevels);
   return (
     <>
       <MainCounters balance={counter} />
       <BlockGroup simpleBlockClick={simpleClick} fadeOut={fadeOut} />
       <UpgradeSection
         upgrades={UpgradeList}
-        setLatestUpgradeId={setLatestUpgradeId}
+        setLatestUpgradeId={updateMultipliers(
+          simpleClickMultiplier,
+          setSimpleClickMultiplier,
+          passiveIncrementPerSecond,
+          setPassiveIncrementPerSecond,
+          basicRegenTimer,
+          setBasicRegenTimer,
+          upgradeLevels,
+          setUpgradeLevels
+        )}
       />
     </>
   );
