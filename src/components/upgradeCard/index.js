@@ -17,14 +17,18 @@ const UpgradeCard = ({
   description,
   price,
   setLatestUpgradeId,
-  upgradeId
+  upgradeId,
+  level
 }) => (
   <Container>
     <IconContainer>
       <StyledFontAwesomeIcon icon={faCoffee} size="lg" />
     </IconContainer>
     <DescriptionContainer>
-      <UpgradeName> {title} </UpgradeName>
+      <UpgradeName>
+        {title}
+        {`(${level})`}
+      </UpgradeName>
       <UpgradeDescription> {description} </UpgradeDescription>
     </DescriptionContainer>
     <UpgradeButtonContainer>

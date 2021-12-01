@@ -1,7 +1,13 @@
 import React from "react";
 import UpgradeCard from "../upgradeCard";
 
-const UpgradeSection = ({ counter, upgrades = [], setLatestUpgradeId }) => (
+const UpgradeSection = ({
+  counter,
+  upgrades = [],
+  setLatestUpgradeId,
+  upgradeLevels = [],
+  isAvailable = []
+}) => (
   <div>
     <p>Upgrades</p>
     {upgrades.map((e, i) => (
@@ -11,6 +17,8 @@ const UpgradeSection = ({ counter, upgrades = [], setLatestUpgradeId }) => (
         title={e.title}
         setLatestUpgradeId={setLatestUpgradeId}
         upgradeId={e.id}
+        level={upgradeLevels[i]}
+        isAvailable={isAvailable[i]}
       />
     ))}
   </div>

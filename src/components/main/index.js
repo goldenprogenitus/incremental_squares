@@ -13,6 +13,22 @@ const Main = () => {
   const [fadeOut, setFadeOut] = useState([...Array(16)].map(() => false));
   const [basicRegenTimer, setBasicRegenTimer] = useState(12000);
   const [upgradeLevels, setUpgradeLevels] = useState(UpgradeList.map(() => 0));
+  const [upgradePrices, setUpgradePrices] = useState(
+    UpgradeList.map((e, i) => UpgradeList[i].basePrice)
+  );
+  const [isUpgradeAvailable, setIsUpgradeAvailable] = useState(
+    UpgradeList.map(() => false)
+  );
+
+  useEffect(() => {
+    const isUpgradeAvailableBuffer = [...isUpgradeAvailable];
+    for (let i = 0; i < UpgradeList.length; i++) {
+      if (upgradePrices[i] <= counter) {
+        isUpgradeAvailableBuffer[i] = true;
+      }
+    }
+    setIsUpgradeAvailable(isUpgradeAvailableBuffer);
+  }, [counter]);
 
   useEffect(() => {
     if (passiveIncrementPerSecond !== 0) {
@@ -47,13 +63,13 @@ const Main = () => {
     setFadeOut([...fadeOut]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [effectIndex]);
-  console.log(upgradeLevels);
   return (
     <>
       <MainCounters balance={counter} />
       <BlockGroup simpleBlockClick={simpleClick} fadeOut={fadeOut} />
       <UpgradeSection
         upgrades={UpgradeList}
+        upgradeLevels={upgradeLevels}
         setLatestUpgradeId={updateMultipliers(
           simpleClickMultiplier,
           setSimpleClickMultiplier,
