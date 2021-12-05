@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export const Container = styled.div`
@@ -45,6 +45,11 @@ export const UpgradeButton = styled.button`
   height: 45px;
   font-size: 11px;
   text-align: center;
+  ${({ isAvailable }) =>
+    !isAvailable &&
+    css`
+      background-color: gray;
+    `};
 `;
 
 export const UpgradeButtonSpan = styled.span`

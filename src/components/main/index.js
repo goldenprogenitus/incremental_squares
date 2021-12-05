@@ -4,72 +4,78 @@ import MainCounters from "../mainCounters";
 import UpgradeSection from "../upgradeSection";
 import { UpgradeList } from "../../libs/upgradeList";
 import { updateMultipliers } from "../../libs/multipliers";
+import { rareBlockGenerator } from "../../libs/rareBlockGenerator";
 
 const Main = () => {
   const [counter, setCounter] = useState(0);
+  const [passiveCounter, setPassiveCounter] = useState(0);
   const [passiveIncrementPerSecond, setPassiveIncrementPerSecond] = useState(0);
   const [simpleClickMultiplier, setSimpleClickMultiplier] = useState(1);
-  const [effectIndex, setEffectIndex] = useState(-1);
-  const [fadeOut, setFadeOut] = useState([...Array(16)].map(() => false));
+  const [nextClickWillRandomize, setNextClickWillRandomize] = useState(false);
   const [basicRegenTimer, setBasicRegenTimer] = useState(12000);
   const [upgradeLevels, setUpgradeLevels] = useState(UpgradeList.map(() => 0));
   const [upgradePrices, setUpgradePrices] = useState(
     UpgradeList.map((e, i) => UpgradeList[i].basePrice)
+  );
+  const [colorList, setColorList] = useState(
+    [...Array(16)].map(() => "#ffffff")
   );
   const [isUpgradeAvailable, setIsUpgradeAvailable] = useState(
     UpgradeList.map(() => false)
   );
 
   useEffect(() => {
+    if (passiveIncrementPerSecond !== 0) {
+      const interval = setInterval(() => {
+        setPassiveCounter(passiveCounter + passiveIncrementPerSecond);
+      }, 1000);
+      return () => {
+        clearInterval(interval);
+      };
+    }
+  }, [passiveCounter, passiveIncrementPerSecond]);
+
+  useEffect(() => {
     const isUpgradeAvailableBuffer = [...isUpgradeAvailable];
     for (let i = 0; i < UpgradeList.length; i++) {
-      if (upgradePrices[i] <= counter) {
-        isUpgradeAvailableBuffer[i] = true;
-      }
+      isUpgradeAvailableBuffer[i] =
+        upgradePrices[i] <= counter + passiveCounter;
     }
     setIsUpgradeAvailable(isUpgradeAvailableBuffer);
-  }, [counter]);
-
-  useEffect(() => {
-    if (passiveIncrementPerSecond !== 0) {
-      const timeout = setTimeout(() => {
-        setCounter(counter + passiveIncrementPerSecond);
-      }, 1000);
-
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [counter, passiveIncrementPerSecond]);
+  }, [counter, passiveCounter, upgradePrices]);
 
   const simpleClick = useCallback(
-    index => {
+    (index, setColor) => {
       setCounter(1 * simpleClickMultiplier + counter);
-      fadeOut[index] = true;
-      setFadeOut(fadeOut);
-      const timeout = setTimeout(() => {
-        setEffectIndex(index);
-      }, basicRegenTimer);
-
-      return () => {
-        clearTimeout(timeout);
-      };
+      if (nextClickWillRandomize) {
+        setPassiveIncrementPerSecond(passiveIncrementPerSecond + 1);
+        setNextClickWillRandomize(false);
+        setColor(index);
+      }
     },
-    [counter, simpleClickMultiplier, fadeOut, basicRegenTimer]
+    [
+      counter,
+      simpleClickMultiplier,
+      nextClickWillRandomize,
+      passiveIncrementPerSecond
+    ]
   );
 
-  useEffect(() => {
-    fadeOut[effectIndex] = false;
-    setFadeOut([...fadeOut]);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [effectIndex]);
   return (
     <>
-      <MainCounters balance={counter} />
-      <BlockGroup simpleBlockClick={simpleClick} fadeOut={fadeOut} />
+      <MainCounters balance={counter + passiveCounter} />
+      <BlockGroup
+        simpleBlockClick={simpleClick}
+        basicRegenTimer={basicRegenTimer}
+        colorList={colorList}
+        setColorList={rareBlockGenerator(colorList, setColorList)}
+      />
       <UpgradeSection
         upgrades={UpgradeList}
         upgradeLevels={upgradeLevels}
+        upgradePrices={upgradePrices}
+        isUpgradeAvailable={isUpgradeAvailable}
+        nextClickWillRandomize={nextClickWillRandomize}
         setLatestUpgradeId={updateMultipliers(
           simpleClickMultiplier,
           setSimpleClickMultiplier,
@@ -78,7 +84,14 @@ const Main = () => {
           basicRegenTimer,
           setBasicRegenTimer,
           upgradeLevels,
-          setUpgradeLevels
+          setUpgradeLevels,
+          counter,
+          setCounter,
+          upgradePrices,
+          setUpgradePrices,
+          passiveCounter,
+          setPassiveCounter,
+          setNextClickWillRandomize
         )}
       />
     </>

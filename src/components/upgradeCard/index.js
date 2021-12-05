@@ -18,7 +18,9 @@ const UpgradeCard = ({
   price,
   setLatestUpgradeId,
   upgradeId,
-  level
+  level,
+  isAvailable,
+  nextClickWillRandomize
 }) => (
   <Container>
     <IconContainer>
@@ -32,9 +34,18 @@ const UpgradeCard = ({
       <UpgradeDescription> {description} </UpgradeDescription>
     </DescriptionContainer>
     <UpgradeButtonContainer>
-      <UpgradeButton onClick={() => setLatestUpgradeId(upgradeId)}>
-        <UpgradeButtonSpan>■</UpgradeButtonSpan>
-        {price}
+      <UpgradeButton
+        onClick={isAvailable ? () => setLatestUpgradeId(upgradeId) : () => {}}
+        isAvailable={isAvailable}
+      >
+        {nextClickWillRandomize ? (
+          "Waiting"
+        ) : (
+          <>
+            <UpgradeButtonSpan>■</UpgradeButtonSpan>
+            {price}
+          </>
+        )}
       </UpgradeButton>
     </UpgradeButtonContainer>
   </Container>

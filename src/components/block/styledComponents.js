@@ -6,6 +6,12 @@ export const StyledBlock = styled.div`
   background-color: white;
   margin: 4px;
 
+  ${({ color }) =>
+    color &&
+    css`
+      background-color: ${color};
+    `}
+
   ${({ fadeOut }) =>
     fadeOut &&
     css`

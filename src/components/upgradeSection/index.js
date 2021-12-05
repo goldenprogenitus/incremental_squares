@@ -6,19 +6,25 @@ const UpgradeSection = ({
   upgrades = [],
   setLatestUpgradeId,
   upgradeLevels = [],
-  isAvailable = []
+  upgradePrices = [],
+  isUpgradeAvailable = [],
+  nextClickWillRandomize = false
 }) => (
   <div>
     <p>Upgrades</p>
     {upgrades.map((e, i) => (
       <UpgradeCard
         description={e.description}
-        price={e.basePrice}
+        price={upgradePrices[i]}
         title={e.title}
         setLatestUpgradeId={setLatestUpgradeId}
         upgradeId={e.id}
         level={upgradeLevels[i]}
-        isAvailable={isAvailable[i]}
+        isAvailable={
+          isUpgradeAvailable[i] &&
+          !(e.twoClickUpgrade && nextClickWillRandomize)
+        }
+        nextClickWillRandomize={e.twoClickUpgrade && nextClickWillRandomize}
       />
     ))}
   </div>

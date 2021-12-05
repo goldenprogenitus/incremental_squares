@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyledBlock } from "./styledComponents";
 
-const Block = ({ simpleBlockClick, fadeOut, index }) => {
+const Block = ({
+  simpleBlockClick,
+  index,
+  color,
+  setColor,
+  basicRegenTimer
+}) => {
+  const [wasClicked, setWasClicked] = useState(false);
   return (
     <StyledBlock
-      onClick={fadeOut ? () => {} : () => simpleBlockClick(index)}
-      fadeOut={fadeOut}
+      onClick={
+        wasClicked
+          ? () => {}
+          : () => {
+              setWasClicked(true);
+              simpleBlockClick(index, setColor);
+              setTimeout(() => {
+                setWasClicked(false);
+              }, basicRegenTimer);
+            }
+      }
+      fadeOut={wasClicked}
+      color={color}
     />
   );
 };

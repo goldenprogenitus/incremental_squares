@@ -2,14 +2,21 @@ import React from "react";
 import Block from "../block";
 import { Container } from "./styledComponents";
 
-const BlockGroup = ({ simpleBlockClick, fadeOut }) => (
+const BlockGroup = ({
+  simpleBlockClick,
+  colorList,
+  setColorList,
+  basicRegenTimer
+}) => (
   <Container>
-    {fadeOut.map((isFadeOut, i) => (
+    {colorList.map((color, i) => (
       <Block
         simpleBlockClick={simpleBlockClick}
-        fadeOut={isFadeOut}
+        basicRegenTimer={basicRegenTimer}
         key={`simpleBlock-${i}`}
         index={i}
+        color={color}
+        setColor={setColorList}
       />
     ))}
   </Container>
