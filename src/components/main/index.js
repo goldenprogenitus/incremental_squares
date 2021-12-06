@@ -9,7 +9,7 @@ import { formatNumbers } from "../../libs/bigNumbers";
 import { updateTier } from "../../libs/updateTier";
 
 const Main = () => {
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(10000000);
   const [passiveCounter, setPassiveCounter] = useState(0);
   const [passiveIncrementPerSecond, setPassiveIncrementPerSecond] = useState(0);
   const [simpleClickMultiplier, setSimpleClickMultiplier] = useState(1);
@@ -22,6 +22,11 @@ const Main = () => {
       UpgradeList[i].unique
         ? UpgradeList[i].basePrice
         : UpgradeList[i].basePrice[0]
+    )
+  );
+  const [upgradeEffects, setUpgradeEffects] = useState(
+    UpgradeList.map((e, i) =>
+      UpgradeList[i].unique ? UpgradeList[i].effect : UpgradeList[i].effect[0]
     )
   );
   const [colorList, setColorList] = useState(
@@ -55,7 +60,9 @@ const Main = () => {
     (index, setColor) => {
       setCounter(1 * simpleClickMultiplier + counter);
       if (nextClickWillRandomize) {
-        setPassiveIncrementPerSecond(passiveIncrementPerSecond + 1);
+        setPassiveIncrementPerSecond(
+          passiveIncrementPerSecond + upgradeEffects[1]
+        );
         setNextClickWillRandomize(false);
         setColor(index);
       }
@@ -64,7 +71,8 @@ const Main = () => {
       counter,
       simpleClickMultiplier,
       nextClickWillRandomize,
-      passiveIncrementPerSecond
+      passiveIncrementPerSecond,
+      upgradeEffects
     ]
   );
 
@@ -99,7 +107,8 @@ const Main = () => {
           setUpgradePrices,
           passiveCounter,
           setPassiveCounter,
-          setNextClickWillRandomize
+          setNextClickWillRandomize,
+          upgradeEffects
         )}
         setUpgradeTier={updateTier(
           upgradePrices,
@@ -107,7 +116,9 @@ const Main = () => {
           upgradeLevels,
           setUpgradeLevels,
           upgradeTiers,
-          setUpgradeTiers
+          setUpgradeTiers,
+          upgradeEffects,
+          setUpgradeEffects
         )}
       />
     </>

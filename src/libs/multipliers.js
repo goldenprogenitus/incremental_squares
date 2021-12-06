@@ -14,14 +14,17 @@ export const updateMultipliers =
     setUpgradePrices,
     passiveCounter,
     setPassiveCounter,
-    setNextClickWillRandomize
+    setNextClickWillRandomize,
+    upgradeEffects
   ) =>
   upgradeId => {
     if (counter + passiveCounter >= upgradePrices[upgradeId]) {
       let wasIncrementPerSecondChanged = false;
       switch (upgradeId) {
         case 0:
-          setSimpleClickMultiplier(simpleClickMultiplier + 0.2);
+          setSimpleClickMultiplier(
+            simpleClickMultiplier + upgradeEffects[upgradeId]
+          );
           break;
         case 1:
           wasIncrementPerSecondChanged = true;
@@ -29,7 +32,7 @@ export const updateMultipliers =
           // setPassiveIncrementPerSecond(passiveIncrementPerSecond + 1);
           break;
         case 2:
-          setBasicRegenTimer(basicRegenTimer * 0.9);
+          setBasicRegenTimer(basicRegenTimer * upgradeEffects[upgradeId]);
           break;
         default:
           console.log("No Upgrade");

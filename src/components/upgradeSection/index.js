@@ -32,9 +32,9 @@ const UpgradeSection = ({
         />
       ) : (
         <RepeatedUpgradeCard
-          description={e.description[0]}
+          description={e.description[upgradeTiers[i] - 1]}
           price={upgradePrices[i]}
-          title={e.title[0]}
+          title={e.title[upgradeTiers[i] - 1]}
           setLatestUpgradeId={setLatestUpgradeId}
           upgradeId={e.id}
           level={upgradeLevels[i]}
@@ -42,6 +42,8 @@ const UpgradeSection = ({
             isUpgradeAvailable[i] &&
             !(e.twoClickUpgrade && nextClickWillRandomize)
           }
+          effectLength={e.effect.length}
+          unlockNextTierPrice={e.levelTrigger[upgradeTiers[i] - 1]}
           nextClickWillRandomize={e.twoClickUpgrade && nextClickWillRandomize}
           upgradeTier={upgradeTiers[i]}
           setUpgradeTier={setUpgradeTier}

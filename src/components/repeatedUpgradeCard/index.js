@@ -10,7 +10,8 @@ import {
   UpgradeButton,
   UpgradeButtonSpan,
   IconSection,
-  IconLevel
+  IconLevel,
+  HidableIconContainer
 } from "./styledComponents";
 import {
   faCoffee,
@@ -29,53 +30,64 @@ const RepeatedUpgradeCard = ({
   isAvailable,
   nextClickWillRandomize,
   upgradeTier,
-  setUpgradeTier = () => {}
-}) => (
-  <Container>
-    <IconSection>
+  setUpgradeTier = () => {},
+  effectLength,
+  unlockNextTierPrice
+}) => {
+  const isUpVisible =
+    effectLength !== upgradeTier && level >= unlockNextTierPrice;
+  const isDownVisible = upgradeTier !== 1;
+  return (
+    <Container>
       <IconLevel>{upgradeTier}</IconLevel>
-      <IconContainer>
-        <StyledFontAwesomeIcon
-          icon={faAngleUp}
-          size="sm"
-          onClick={() => setUpgradeTier(upgradeId, 1)}
-        />
-      </IconContainer>
-      <IconContainer>
-        <StyledFontAwesomeIcon icon={faCoffee} size="lg" />
-      </IconContainer>
-      <IconContainer>
-        <StyledFontAwesomeIcon
-          icon={faAngleDown}
-          size="sm"
-          onClick={() => setUpgradeTier(upgradeId, -1)}
-        />
-      </IconContainer>
-    </IconSection>
+      <IconSection>
+        <HidableIconContainer isVisible={isUpVisible}>
+          <StyledFontAwesomeIcon
+            icon={faAngleUp}
+            size="sm"
+            onClick={
+              isUpVisible ? () => setUpgradeTier(upgradeId, 1) : () => {}
+            }
+          />
+        </HidableIconContainer>
+        <IconContainer>
+          <StyledFontAwesomeIcon icon={faCoffee} size="lg" />
+        </IconContainer>
+        <HidableIconContainer isVisible={isDownVisible}>
+          <StyledFontAwesomeIcon
+            icon={faAngleDown}
+            size="sm"
+            onClick={
+              isDownVisible ? () => setUpgradeTier(upgradeId, -1) : () => {}
+            }
+          />
+        </HidableIconContainer>
+      </IconSection>
 
-    <DescriptionContainer>
-      <UpgradeName>
-        {title}
-        {`(${level})`}
-      </UpgradeName>
-      <UpgradeDescription> {description} </UpgradeDescription>
-    </DescriptionContainer>
-    <UpgradeButtonContainer>
-      <UpgradeButton
-        onClick={isAvailable ? () => setLatestUpgradeId(upgradeId) : () => {}}
-        isAvailable={isAvailable}
-      >
-        {nextClickWillRandomize ? (
-          "Waiting"
-        ) : (
-          <>
-            <UpgradeButtonSpan>■</UpgradeButtonSpan>
-            {formatNumbers(price)}
-          </>
-        )}
-      </UpgradeButton>
-    </UpgradeButtonContainer>
-  </Container>
-);
+      <DescriptionContainer>
+        <UpgradeName>
+          {title}
+          {`(${level})`}
+        </UpgradeName>
+        <UpgradeDescription> {description} </UpgradeDescription>
+      </DescriptionContainer>
+      <UpgradeButtonContainer>
+        <UpgradeButton
+          onClick={isAvailable ? () => setLatestUpgradeId(upgradeId) : () => {}}
+          isAvailable={isAvailable}
+        >
+          {nextClickWillRandomize ? (
+            "Waiting"
+          ) : (
+            <>
+              <UpgradeButtonSpan>■</UpgradeButtonSpan>
+              {formatNumbers(price)}
+            </>
+          )}
+        </UpgradeButton>
+      </UpgradeButtonContainer>
+    </Container>
+  );
+};
 
 export default RepeatedUpgradeCard;

@@ -12,16 +12,31 @@ export const Container = styled.div`
 export const StyledFontAwesomeIcon = styled(FontAwesomeIcon)``;
 
 export const IconSection = styled.div`
-  padding: 0 16px;
   margin: auto;
   position: relative;
+  padding: 0 16px;
+  height: 100%;
+`;
+
+export const HidableIconContainer = styled.div`
+  ${props =>
+    !props.isVisible &&
+    css`
+      opacity: 0;
+    `}
 `;
 
 export const IconContainer = styled.div``;
 
 export const IconLevel = styled.div`
   position: absolute;
-  left: 6px;
+  background-color: pink;
+  width: 16px;
+  color: black;
+  font-size: 14px;
+  font-weight: 800;
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
 `;
 
 export const DescriptionContainer = styled.div`
