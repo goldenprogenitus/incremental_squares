@@ -6,6 +6,7 @@ import { UpgradeList } from "../../libs/upgradeList";
 import { updateMultipliers } from "../../libs/multipliers";
 import { rareBlockGenerator } from "../../libs/rareBlockGenerator";
 import { formatNumbers } from "../../libs/bigNumbers";
+import { updateTier } from "../../libs/updateTier";
 
 const Main = () => {
   const [counter, setCounter] = useState(0);
@@ -15,8 +16,13 @@ const Main = () => {
   const [nextClickWillRandomize, setNextClickWillRandomize] = useState(false);
   const [basicRegenTimer, setBasicRegenTimer] = useState(12000);
   const [upgradeLevels, setUpgradeLevels] = useState(UpgradeList.map(() => 0));
+  const [upgradeTiers, setUpgradeTiers] = useState(UpgradeList.map(() => 1));
   const [upgradePrices, setUpgradePrices] = useState(
-    UpgradeList.map((e, i) => UpgradeList[i].basePrice)
+    UpgradeList.map((e, i) =>
+      UpgradeList[i].unique
+        ? UpgradeList[i].basePrice
+        : UpgradeList[i].basePrice[0]
+    )
   );
   const [colorList, setColorList] = useState(
     [...Array(16)].map(() => "#ffffff")
@@ -77,6 +83,7 @@ const Main = () => {
         upgradePrices={upgradePrices}
         isUpgradeAvailable={isUpgradeAvailable}
         nextClickWillRandomize={nextClickWillRandomize}
+        upgradeTiers={upgradeTiers}
         setLatestUpgradeId={updateMultipliers(
           simpleClickMultiplier,
           setSimpleClickMultiplier,
@@ -93,6 +100,14 @@ const Main = () => {
           passiveCounter,
           setPassiveCounter,
           setNextClickWillRandomize
+        )}
+        setUpgradeTier={updateTier(
+          upgradePrices,
+          setUpgradePrices,
+          upgradeLevels,
+          setUpgradeLevels,
+          upgradeTiers,
+          setUpgradeTiers
         )}
       />
     </>

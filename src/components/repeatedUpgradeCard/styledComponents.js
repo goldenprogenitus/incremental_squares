@@ -11,12 +11,17 @@ export const Container = styled.div`
 
 export const StyledFontAwesomeIcon = styled(FontAwesomeIcon)``;
 
-export const IconContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+export const IconSection = styled.div`
   padding: 0 16px;
   margin: auto;
+  position: relative;
+`;
+
+export const IconContainer = styled.div``;
+
+export const IconLevel = styled.div`
+  position: absolute;
+  left: 6px;
 `;
 
 export const DescriptionContainer = styled.div`
