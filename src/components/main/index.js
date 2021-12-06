@@ -8,7 +8,7 @@ import { rareBlockGenerator } from "../../libs/rareBlockGenerator";
 import { formatNumbers } from "../../libs/bigNumbers";
 
 const Main = () => {
-  const [counter, setCounter] = useState(10000);
+  const [counter, setCounter] = useState(0);
   const [passiveCounter, setPassiveCounter] = useState(0);
   const [passiveIncrementPerSecond, setPassiveIncrementPerSecond] = useState(0);
   const [simpleClickMultiplier, setSimpleClickMultiplier] = useState(1);
