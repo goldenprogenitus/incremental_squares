@@ -17,7 +17,7 @@ export const updateMultipliers =
     setNextClickWillRandomize
   ) =>
   upgradeId => {
-    if (counter + passiveCounter > upgradePrices[upgradeId]) {
+    if (counter + passiveCounter >= upgradePrices[upgradeId]) {
       let wasIncrementPerSecondChanged = false;
       switch (upgradeId) {
         case 0:

@@ -5,9 +5,10 @@ import UpgradeSection from "../upgradeSection";
 import { UpgradeList } from "../../libs/upgradeList";
 import { updateMultipliers } from "../../libs/multipliers";
 import { rareBlockGenerator } from "../../libs/rareBlockGenerator";
+import { formatNumbers } from "../../libs/bigNumbers";
 
 const Main = () => {
-  const [counter, setCounter] = useState(0);
+  const [counter, setCounter] = useState(10000);
   const [passiveCounter, setPassiveCounter] = useState(0);
   const [passiveIncrementPerSecond, setPassiveIncrementPerSecond] = useState(0);
   const [simpleClickMultiplier, setSimpleClickMultiplier] = useState(1);
@@ -63,7 +64,7 @@ const Main = () => {
 
   return (
     <>
-      <MainCounters balance={counter + passiveCounter} />
+      <MainCounters balance={formatNumbers(counter + passiveCounter)} />
       <BlockGroup
         simpleBlockClick={simpleClick}
         basicRegenTimer={basicRegenTimer}

@@ -11,6 +11,7 @@ import {
   UpgradeButtonSpan
 } from "./styledComponents";
 import { faCoffee } from "@fortawesome/free-solid-svg-icons";
+import { formatNumbers } from "../../libs/bigNumbers";
 
 const UpgradeCard = ({
   title,
@@ -43,7 +44,7 @@ const UpgradeCard = ({
         ) : (
           <>
             <UpgradeButtonSpan>■</UpgradeButtonSpan>
-            {price}
+            {formatNumbers(price)}
           </>
         )}
       </UpgradeButton>
