@@ -9,7 +9,7 @@ import { formatNumbers } from "../../libs/bigNumbers";
 import { updateTier } from "../../libs/updateTier";
 
 const Main = () => {
-  const [counter, setCounter] = useState(10000000);
+  const [counter, setCounter] = useState(0);
   const [passiveCounter, setPassiveCounter] = useState(0);
   const [passiveIncrementPerSecond, setPassiveIncrementPerSecond] = useState(0);
   const [simpleClickMultiplier, setSimpleClickMultiplier] = useState(1);
